@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<title>Chat - XP</title>
+	<meta charset="utf-8"/>
+	<script
+  src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+  <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="estilo.css"/>
+	<style type="text/css">
+
+	#chat{
+		position: fixed;
+		bottom: 0px;
+		right: 0px;
+		width: 390px;
+		height: 500px; 
+		background-color: rgb(236, 240, 241);
+		border: 1px solid rgb(189, 195, 199);
+		overflow-y:auto;
+		overflow-x: hidden;
+		overflow: scroll;
+	}
+
+	#chat-header{
+		position: fixed;
+		bottom: 0px;
+		right: 0px;
+		color: #fff;
+		font-size: 18px;
+		width: 390px;
+		height: 30px;
+		background-color: rgb(230, 126, 34);
+		z-index: 1;
+		cursor: pointer;
+		padding: 5px;
+		box-sizing: border-box;
+	}
+
+	#chat-body{
+		width: 390px;
+		height:435px;
+	}
+
+	.container-msg{
+		width: 100%;
+		height: auto;
+		background-color: #fff;
+	}
+
+	.chat-img{
+		width:30px;
+		height: auto;
+		margin-bottom: 7px;
+		float: left;
+
+	}
+
+	.chat-msg{
+		width: 265px;
+		min-height: 80px;
+		padding: 10px;
+		/*background-color: #dcdcdc;*/
+		background-image: url("imagens/user.png");
+		background-size: 30px;
+		background-repeat: no-repeat;
+		background-position: right top;
+		border: solid 1px #dcdcdc;
+		box-shadow: 2px 2px rgba(0,0,0,0.1);
+		box-sizing: border-box;
+		float: right;
+		margin-bottom: 7px;
+		margin-right: 15px;
+	}
+
+	.chat-img-w{
+		width:30px;
+		height: auto;
+		margin-left:5px;
+		margin-bottom: 7px;
+		float: right;
+		margin-left: 5px;
+
+	}
+
+	.chat-msg-w{
+		width: 265px;
+		min-height: 80px;
+		padding: 10px;
+		background-image: url("imagens/xp.png");
+		background-size: 30px;
+		background-repeat: no-repeat;
+		background-position: right top;
+		background-color: #dcdcdc;
+		box-shadow: 2px 2px rgba(0,0,0,0.1);
+		box-sizing: border-box;
+		float: left;
+		margin-bottom: 7px;
+	}
+
+	#chat-input{
+		width: 390px;
+		height: 35px;
+		background: #FFF;
+		padding: 5px 0px 0px 5px;
+		box-sizing: border-box;
+		clear: both;
+	}
+
+	.fix{
+		clear: right;
+	}
+
+	hr{
+		margin: 2px;
+		color: #f00;
+      	background-color: rgba(189, 195, 199,0.7);
+      	height: 1px;
+      	display: block;
+
+	}
+
+	
+	</style>
+	<script>
+		$(document).ready( function(){
+			$("#chat").hide();
+
+			
+
+			$.ajax({
+		 			url: 'https://chatxp.mybluemix.net/conversa/oi',
+					method: 'get',
+
+					beforeSend: function() {
+						$('#progress').append('<img src="imagens/load.gif" width="30">');
+					},
+
+					success: function(data){
+						$('#chat-body').html('');
+						$('#chat-body').append('<div class="container-msg">');
+						$('#chat-body').append('<div class="chat-msg-w">'+data+'</div>');
+						//$('#chat-body').append('<div class="chat-img-w">');
+						//$('#chat-body').append('<img src="imagens/xp.png" width="30"/>');
+						//$('#chat-body').append('</div>');
+						$('#chat-body').append('</div>');
+						$('#chat-body').append('<br class="fix"/>');
+						minhadiv.scrollTop = minhadiv.scrollHeight;
+						
+					}
+		 		});
+
+
+
+
+			$("#chat-header").click(function() {
+			  $("#chat").slideToggle( "slow", function() {
+			    
+			  });
+			});
+			var minhadiv = document.getElementById("chat");
+			$('#btn-envia').click(function(){
+
+				var msg = $('#pergunta').val();
+				$.ajax({
+		 			url: 'https://chat-xp.mybluemix.net/conversa/' + msg,
+					method: 'get',
+
+					beforeSend: function() {
+						var tt = $('#pergunta').val();
+						$('#progress').append('<img src="imagens/load.gif" width="30">');
+						$('#chat-body').append('<div class="container-msg">');
+						//$('#chat-body').append('<div class="chat-img">');
+						//$('#chat-body').append('<img src="imagens/user.png" width="30"/>');
+						//$('#chat-body').append('</div>');
+						$('#chat-body').append('<div class="chat-msg">'+tt+'</div>');
+						$('#chat-body').append('</div>');
+						$('#chat-body').append('<br class="fix"/>');
+						$('#pergunta').val("");
+						minhadiv.scrollTop = minhadiv.scrollHeight;
+					},
+
+					success: function(data){
+						$('#progress').html('');
+						$('#chat-body').append('<div class="container-msg">');
+						$('#chat-body').append('<div class="chat-msg-w">'+data+'</div>');
+						//$('#chat-body').append('<div class="chat-img-w">');
+						//$('#chat-body').append('<img src="imagens/xp.png" width="30"/>');
+						//$('#chat-body').append('</div>');
+						$('#chat-body').append('</div>');
+						$('#chat-body').append('<br class="fix"/>');
+						minhadiv.scrollTop = minhadiv.scrollHeight;
+						
+					}
+		 		});
+
+
+			});
+		});
+
+		$(document).keypress(function(e) {
+			if ($('#pergunta').val() != '') {
+    			if(e.which == 13) $('#btn-envia').click();
+    		}
+		});
+	</script>
+</head>
+<body>
+<hr/>
+	<div id="chat-header">
+		<span class="glyphicon glyphicon-comment glyphicon glyphicon-comment"></span>
+		Iniciar Chat
+	</div>
+	<div id="chat">
+		<div id="chat-body">
+			
+			<!--<div class="container-msg">
+				<div class="chat-img">
+					<img src="imagens/user.png" width="75" height="80"/>			
+				</div>
+				
+				<div class="chat-msg">
+				</div>
+
+			</div>
+
+
+			<div class="container-msg">
+				
+				<div class="chat-img-w">
+					<img src="imagens/xp.png" width="45" height="50"/>
+				</div>
+
+				<div class="chat-msg-w">
+				Olá, Eu sou o Alberto e irei atende-lo.<br/>O que você precisa?
+				</div>
+			</div>-->
+
+
+
+
+		</div>
+
+		<div id="chat-input">
+			<input type="text" id="pergunta" name="pergunta" placeholder="Digite aqui a sua menssagem.." size="37">
+			<a href="#" id="btn-envia" class="glyphicon glyphicon-comment glyphicon glyphicon-send"></a> 
+			<span id="progress"></span>
+		</div>
+	</div>
+</body>
+</html>

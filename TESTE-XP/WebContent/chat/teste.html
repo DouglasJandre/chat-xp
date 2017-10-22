@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<title>Chat - XP</title>
+	<meta charset="utf-8"/>
+	<script
+  src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+  <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+ 
+	<script>
+		$(document).ready( function(){
+			
+
+
+			//CONVERSAS
+
+			$('#btn-envia').click(function(){
+
+				var msg = $('#pergunta').val();
+				$.ajax({
+		 			//url: 'https://chatbot-hml.xpi.com.br/XP-Investimentos/conversa/' + msg,
+		 			url: 'http://172.17.6.200:8080/XP-Investimentos/' + msg,
+					method: 'get',
+
+					beforeSend: function() {
+						var tt = $('#pergunta').val();
+						$('#chat').append('Voce: ' + tt + '<br/>');
+						console.log('user: ' + tt);
+						$('#pergunta').val("");
+					},
+
+					success: function(data){
+						console.log('wat: ' + data);
+						$('#chat').append('XP: ' + data + '<br/>');
+					}
+		 		});
+
+
+			});
+		});
+
+		$(document).keypress(function(e) {
+			if ($('#pergunta').val() != '') {
+    			if(e.which == 13) $('#btn-envia').click();
+    		}
+		});
+
+	</script>
+</head>
+<body>
+
+	<div id="chat"></div>
+		
+	<input type="text" id="pergunta" name="pergunta" placeholder="Digite aqui a sua menssagem.." size="37">
+	<a href="#" id="btn-envia" class="glyphicon glyphicon-comment glyphicon glyphicon-send"></a> 
+			
+
+</body>
+</html>

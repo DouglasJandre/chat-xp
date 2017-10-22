@@ -1,0 +1,6 @@
+br\com\ykp\xp\config\WebInitializer.class
+br\com\ykp\xp\config\WebConfig.class
+br\com\ykp\xp\Conversation.class
+br\com\ykp\xp\model\Conversa.class
+br\com\ykp\xp\ConversationFacade.class
+br\com\ykp\xp\emailconfig\SendEmail.class
